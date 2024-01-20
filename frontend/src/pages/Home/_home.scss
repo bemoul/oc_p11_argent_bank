@@ -1,0 +1,58 @@
+.main {
+  display: flex;
+  flex: 1;
+}
+
+.hero {
+  background-image: url('../../assets/img/bank-tree.jpeg');
+  background-position: 0 -202px;
+  background-size: cover;
+  background-repeat: no-repeat;
+  height: 400px;
+  position: relative;
+
+  & .hero-content {
+    position: absolute;
+    top: 5.1rem;
+    right: 5.2rem;
+    width: 300px;
+    background: white;
+    padding: 2rem;
+    text-align: left;
+    margin: 0 auto;
+
+    & .subtitle {
+      font-weight: bold;
+      font-size: 1.5rem;
+      margin: 0;
+    }
+
+    & .text {
+      margin-bottom: 0;
+      font-size: 1.2rem;
+    }
+  }
+}
+
+ .features {
+  display: flex;
+
+  .feature-item {
+    flex: 1;
+    padding: 2.5rem;
+  }
+
+  & .feature-icon {
+    width: 100px;
+    border: 10px solid #00bc77;
+    border-radius: 50%;
+    padding: 1rem;
+  }
+
+  & .feature-item-title {
+    color: #222;
+    font-size: 1.25rem;
+    font-weight: bold;
+    margin-bottom: 0.5rem;
+  }
+}
