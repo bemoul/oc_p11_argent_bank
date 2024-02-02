@@ -1,3 +1,5 @@
+import { NavLink } from "react-router-dom"
+
 export const UserForm = () => {
   return (
     <main className="main bg-dark">
@@ -18,7 +20,7 @@ export const UserForm = () => {
             <label htmlFor="remember-me">Remember me</label>
           </div>
           {/* Placeholder due to static site */}
-          <a href="./user.html" className="sign-in-button">Sign In</a>
+          <NavLink to="/user" className="sign-in-button">Sign In</NavLink>
           {/* Should be the button below */}
           {/* <button className="sign-in-button">Sign In</button> */}
         </form>
