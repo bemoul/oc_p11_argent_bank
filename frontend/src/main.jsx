@@ -9,6 +9,7 @@ import "./assets/style/main.scss";
 import {App} from './App.jsx'
 import { Home } from './pages/Home/Home.jsx';
 import { SignIn } from './pages/SignIn/SignIn.jsx';
+import { Dashbord } from './pages/Dashbord/Dashbord.jsx';
 
 const router = createBrowserRouter([
   {
@@ -22,6 +23,10 @@ const router = createBrowserRouter([
       {
         path: "/login",
         element: <SignIn />
+      },
+      {
+        path: "/user",
+        element: <Dashbord />
       },
     ]
   },
