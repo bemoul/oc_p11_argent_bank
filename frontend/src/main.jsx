@@ -9,8 +9,10 @@ import "./assets/style/main.scss";
 import {App} from './App.jsx'
 import { Home } from './pages/Home/Home.jsx';
 import { SignIn } from './pages/SignIn/SignIn.jsx';
-import { Dashbord } from './pages/Dashbord/Dashbord.jsx';
-
+// Store, Provider : Redux
+import store from "./store/store.js";
+import { Provider } from 'react-redux';
+import User from './pages/User/User.jsx';
 const router = createBrowserRouter([
   {
     path: "/",
@@ -21,12 +23,14 @@ const router = createBrowserRouter([
         element: <Home />,
       },
       {
-        path: "/login",
+        path: "/signin",
         element: <SignIn />
       },
       {
+      //protected routes
         path: "/user",
-        element: <Dashbord />
+        element:
+          <User />
       },
     ]
   },
@@ -34,6 +38,8 @@ const router = createBrowserRouter([
 
 ReactDOM.createRoot(document.getElementById("root")).render(
   <React.StrictMode>
-    <RouterProvider router={router} />
+    <Provider store={store}>
+      <RouterProvider router={router} />
+     </Provider> 
   </React.StrictMode>
 );

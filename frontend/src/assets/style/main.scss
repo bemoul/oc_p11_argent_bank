@@ -4,7 +4,7 @@
 @import "base";
 
 // 2. Pages
-@import "../../pages/Home/home", "../../pages/SignIn/signIn", "../../pages/Dashbord/dashboard";
+@import "../../pages/Home/home", "../../pages/SignIn/signIn", "../../components/Transactions/transaction";
 
 // 3. Components
 @import "../../components/Header/header", "../../components/Footer/footer", "../../components/UserForm/userForm";

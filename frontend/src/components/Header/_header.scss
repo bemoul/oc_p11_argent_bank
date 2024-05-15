@@ -22,7 +22,9 @@
         width: 200px;
       }
     }
-
+    & .main-nav-links {
+      display: flex;
+    }
     & .main-nav-item {
       text-decoration: none;
       margin-right: 0.5rem;
