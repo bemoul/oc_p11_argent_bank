@@ -1,71 +1,57 @@
-import { useDispatch, useSelector } from 'react-redux';
-import { useEffect, useState } from 'react';
 import { useNavigate } from "react-router-dom";
-import { storeSelector } from '../../store/storeSelectors';
-import { userLogin } from '../../store/storeActions';
+import { useDispatch, useSelector } from "react-redux";
+import { login } from "../../reducers/auth";
+import { useState } from "react";
 
+/**
+ * UserForm component for user login
+ *
+ * @returns {JSX.Element} UserForm component
+ */
 export const UserForm = () => {
   const navigate = useNavigate();
-  const user = useSelector(storeSelector);
   const dispatch = useDispatch();
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const { isLoading, error } = useSelector((state) => state.auth);
 
-  const [error, setError] = useState({ email: "", password: "" });
-
-  const formValidation = (email, password) => {
-    let isValid = true;
-
-    if (!(/^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$/g.test(email))) {
-      setError((prevErrors) => ({ ...prevErrors, email: "email required" }));
-      isValid = false;
-    }
-
-    if (!password) {
-      setError((prevErrors) => ({ ...prevErrors, password: "Password required" }));
-      isValid = false;
-    }
-
-    return isValid;
-  };
-
-  const handleSubmit = (e) => {
+  /**
+   * Handles form submission
+   *
+   * @param {Event} e - The form submit event
+   */
+  const onSubmit = (e) => {
     e.preventDefault();
-
-    setError({ email: "", password: "" });
-
-    const email = document.getElementById("username").value;
-    const password = document.getElementById("password").value;
-    const rememberMe = document.getElementById("remember-me").checked;
-
-    const isValid = formValidation(email, password);
-
-    if (isValid) {
-      dispatch(userLogin({ email, password, rememberMe }));
-    }
+    dispatch(login({ email, password })).then((action) => {
+      if (action.meta.requestStatus === 'fulfilled') {
+        const token = action.payload.body.token;
+        console.log('Token:', token); // Log the token
+        if (token) {
+          localStorage.setItem("accessToken", token);
+          navigate("/profile");
+        } else {
+          console.error("Token is undefined");
+        }
+      }
+    });
   };
-
-  useEffect(() => {
-    if (user.isLogged) {
-      navigate("/user");
-    }
-  }, [user.isLogged, user.authToken]);
 
   return (
     <main className="main bg-dark">
       <section className="sign-in-content">
         <i className="fa fa-user-circle sign-in-icon"></i>
         <h1>Connexion</h1>
-        <form>
+        <form onSubmit={onSubmit}>
           <div className="input-wrapper">
-            <label htmlFor="username">Nom d'utilisateur</label>
+            <label htmlFor="email">Adresse e-mail</label>
             <input
               type="text"
-              id="username"
-              label="username"
+              id="email"
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
               autoComplete="off"
-              error={error.email}
               required
             />
-            {error.email && <p className="error-message">{error.email}</p>}
           </div>
 
           <div className="input-wrapper">
@@ -73,20 +59,20 @@ export const UserForm = () => {
             <input
               type="password"
               id="password"
-              label="password"
-              error={error.password}
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
               required
             />
-            {error.password && <p className="error-message">{error.password}</p>}
           </div>
 
           <div className="input-remember">
-            <input type="checkbox" id="remember-me" label="remember me" />
+            <input type="checkbox" id="remember-me" />
             <label htmlFor="remember-me">Se souvenir de moi</label>
           </div>
 
-          <button className="sign-in-button" onClick={(e) => handleSubmit(e)}>
-            Connexion
+          {error && <div className="error">{error}</div>}
+          <button type="submit" disabled={isLoading}>
+            {isLoading ? "Connexion..." : "Connexion"}
           </button>
         </form>
       </section>

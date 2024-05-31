@@ -1,7 +1,5 @@
 import { useDispatch, useSelector } from "react-redux";
 import { storeSelector } from "../../store/storeSelectors";
-import { profilEdit } from '../../store/storeActions';
-import { userUpdateProfile } from "../../store/storeActions";
 
 /**
  * Component which displays inputs
@@ -13,7 +11,7 @@ import { userUpdateProfile } from "../../store/storeActions";
  * @returns UserEdit component
  */
 function UserEdit({firstname, lastname}) {
-    const user = useSelector(storeSelector);
+  const { currentUser, firstName, lastName } = useSelector((state) => state.auth);
     const dispatch = useDispatch();
 
     const handleCancelEdit = (e) => {
@@ -25,7 +23,7 @@ function UserEdit({firstname, lastname}) {
     const handleSaveEdit = (e) => {
         e.preventDefault();
 
-        let token = user.authToken;
+        let token = currentUser.authToken;
         let newFirstName = document.querySelector("#firstname").value;
         let newLastName = document.querySelector("#lastname").value;
 

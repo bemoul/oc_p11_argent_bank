@@ -1,18 +1,20 @@
-import React from 'react'
-import ReactDOM from 'react-dom/client'
-import {createBrowserRouter, RouterProvider} from "react-router-dom";
+import React, { useEffect } from 'react';
+import ReactDOM from 'react-dom/client'; // Are you sure about this import? It's unusual.
 
-// Style import
+import { createBrowserRouter, RouterProvider } from "react-router-dom";
+import { Provider, useDispatch } from 'react-redux';
+import { configureStore } from '@reduxjs/toolkit';
+
 import "./assets/style/main.scss";
 
-// Pages import
-import {App} from './App.jsx'
+import { App } from './App.jsx';
 import { Home } from './pages/Home/Home.jsx';
 import { SignIn } from './pages/SignIn/SignIn.jsx';
-// Store, Provider : Redux
-import store from "./store/store.js";
-import { Provider } from 'react-redux';
-import User from './pages/User/User.jsx';
+import reducer from "./reducers";
+import { getUserProfile } from './reducers/auth';
+import Profile from './pages/Profile/Profile.jsx';
+
+// Create browser router instance with route configuration
 const router = createBrowserRouter([
   {
     path: "/",
@@ -23,23 +25,45 @@ const router = createBrowserRouter([
         element: <Home />,
       },
       {
-        path: "/signin",
+        path: "/login",
         element: <SignIn />
       },
       {
-      //protected routes
-        path: "/user",
-        element:
-          <User />
+        // protected routes
+        path: "/profile",
+        element: <Profile />
       },
     ]
   },
 ]);
 
+// Configure Redux store with combined reducers
+const store = configureStore({ reducer });
+
+// AppInitializer handles any necessary app initialization logic
+const AppInitializer = () => {
+  const dispatch = useDispatch();
+
+  // Fetch user profile if token exists in localStorage
+  useEffect(() => {
+    const token = localStorage.getItem('accessToken');
+    if (token) {
+      dispatch(getUserProfile(token));
+    }
+  }, [dispatch]);
+
+  // Render RouterProvider with configured router
+  return (
+    <RouterProvider router={router} />
+  );
+};
+
+// Render the root of the app with strict mode enabled
 ReactDOM.createRoot(document.getElementById("root")).render(
   <React.StrictMode>
+    {/* Wrap the entire app with Redux Provider to provide the store */}
     <Provider store={store}>
-      <RouterProvider router={router} />
-     </Provider> 
+      <AppInitializer /> {/* Initialize the app */}
+    </Provider>
   </React.StrictMode>
 );
