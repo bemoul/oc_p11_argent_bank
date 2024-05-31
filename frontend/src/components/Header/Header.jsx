@@ -1,26 +1,24 @@
-import logoAgency from "../../assets/img/argentBankLogo.png";
+import React from "react";
 import { NavLink } from "react-router-dom";
-
 import { useDispatch, useSelector } from "react-redux";
-import { storeSelector } from "../../store/storeSelectors";
-import { clearStore, userProfile } from "../../store/storeActions";
-import { useEffect } from "react";
-import Profil from "../Profil/Profil";
+import logoAgency from "../../assets/img/argentBankLogo.png";
+import { logout } from "../../reducers/auth";
+
+/**
+ * Displays the header with navigation links.
+ * Shows user options if logged in, otherwise shows sign-in option.
+ * 
+ * @returns {JSX.Element} Header Component
+ */
 
 export const Header = () => {
-
-  const store = useSelector(storeSelector);
   const dispatch = useDispatch();
+  const { currentUser, firstName } = useSelector((state) => state.auth);
 
-  const handleDisconnection = () => {
-      dispatch(clearStore());
-  }
-
-  useEffect(() => {
-      if (store.authToken) {
-          dispatch(userProfile(store.authToken));
-      }
-  }, [])
+  // Handles user logout
+  const handleLogout = () => {
+    dispatch(logout());
+  };
 
   return (
     <nav className="main-nav">
@@ -29,23 +27,24 @@ export const Header = () => {
         <h1 className="sr-only">Argent Bank</h1>
       </NavLink>
       <div className="main-nav-links">
-        {
-          store.authToken ?
-            <>
-              <NavLink to="/user" className="main-nav-item">
-                <Profil name={`${store.userFirstName} `} />
-              </NavLink>
-              <NavLink to="/" className="main-nav-item" onClick={() => handleDisconnection()}>
-                <i className="fa fa-sign-out"></i>
-                Sign Out
-              </NavLink>
-            </> :
-            <NavLink to="/signin" className="main-nav-item">
+        {currentUser ? (
+          <>
+            <NavLink to="/profile" className="main-nav-item">
               <i className="fa fa-user-circle"></i>
-              Sign In
+              {firstName}
             </NavLink>
-        }
+            <NavLink to="/" className="main-nav-item" onClick={handleLogout}>
+              <i className="fa fa-sign-out"></i>
+              Logout
+            </NavLink>
+          </>
+        ) : (
+          <NavLink to="/login" className="main-nav-item">
+            <i className="fa fa-user-circle"></i>
+            Sign In
+          </NavLink>
+        )}
       </div>
     </nav>
-  )
-}
+  );
+};
