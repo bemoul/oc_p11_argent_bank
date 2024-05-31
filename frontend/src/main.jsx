@@ -1,7 +1,7 @@
 import React, { useEffect } from 'react';
 import ReactDOM from 'react-dom/client'; // Are you sure about this import? It's unusual.
 
-import { createBrowserRouter, RouterProvider } from "react-router-dom";
+import { createBrowserRouter, Navigate, RouterProvider } from "react-router-dom";
 import { Provider, useDispatch } from 'react-redux';
 import { configureStore } from '@reduxjs/toolkit';
 
@@ -33,7 +33,11 @@ const router = createBrowserRouter([
         path: "/profile",
         element: <Profile />
       },
-    ]
+     {
+      path: "*",
+      element: <Navigate to="/" />
+     }
+    ],
   },
 ]);
 
