@@ -9,7 +9,7 @@ import { Transactions } from '../../components/Transactions/Transactions';
  * Displays user profile and transactions.
  * Redirects to /login if the user is not logged in.
  * 
- * @returns {JSX.Element} User Component
+ * @returns {JSX.Element} Profile Component
  */
 const Profile = () => {
   const dispatch = useDispatch();
@@ -22,8 +22,12 @@ const Profile = () => {
 
   // Fetch user profile on mount or when `currentUser` changes
   useEffect(() => {
-    dispatch(getUserProfile(currentUser));
-  }, [dispatch, currentUser]);
+    const token = localStorage.getItem('accessToken');
+    if (token) {
+      dispatch(getUserProfile(token));
+    }
+  }, [dispatch]);
+
 
   return (
     <>
