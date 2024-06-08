@@ -2,7 +2,7 @@ import React from "react";
 import { NavLink } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import logoAgency from "../../assets/img/argentBankLogo.png";
-import { logout } from "../../reducers/auth";
+import { logout } from "../../reducers/authSlice";
 
 /**
  * Displays the header with navigation links.

@@ -1,5 +1,7 @@
 import { useDispatch, useSelector } from "react-redux";
-import { profilEdit, userUpdateProfile } from "../../reducers/auth";
+import { profilEdit } from "../../reducers/authSlice";
+import { userUpdateProfile } from "../../reducers/authThunks";
+
 function UserEdit({ firstname, lastname }) {
   const { currentUser } = useSelector((state) => state.auth);
   const dispatch = useDispatch();
