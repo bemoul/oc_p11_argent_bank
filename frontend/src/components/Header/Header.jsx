@@ -13,7 +13,7 @@ import { logout } from "../../reducers/authSlice";
 
 export const Header = () => {
   const dispatch = useDispatch();
-  const { currentUser, firstName } = useSelector((state) => state.auth);
+  const { currentUser, userName } = useSelector((state) => state.auth);
 
   // Handles user logout
   const handleLogout = () => {
@@ -31,7 +31,7 @@ export const Header = () => {
           <>
             <NavLink to="/profile" className="main-nav-item">
               <i className="fa fa-user-circle"></i>
-              {firstName}
+              {userName}
             </NavLink>
             <NavLink to="/" className="main-nav-item" onClick={handleLogout}>
               <i className="fa fa-sign-out"></i>

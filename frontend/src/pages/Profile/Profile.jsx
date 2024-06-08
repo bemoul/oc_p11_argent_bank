@@ -13,7 +13,7 @@ import { Transactions } from '../../components/Transactions/Transactions';
  */
 const Profile = () => {
   const dispatch = useDispatch();
-  const { currentUser, firstName, lastName } = useSelector((state) => state.auth);
+  const { currentUser, firstName, lastName, userName } = useSelector((state) => state.auth);
 
   // Redirect to /login if not authenticated
   if (!currentUser) {
@@ -28,14 +28,11 @@ const Profile = () => {
     }
   }, [dispatch]);
 
-
   return (
-    <>
-      <main className="main bg-dark">
-        <UserHeader firstname={firstName} lastname={lastName} />
-        <Transactions />
-      </main>
-    </>
+    <main className="main bg-dark">
+      <UserHeader />
+      <Transactions />
+    </main>
   );
 }
 
