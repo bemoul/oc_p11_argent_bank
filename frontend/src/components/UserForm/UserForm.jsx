@@ -1,6 +1,6 @@
 import { useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
-import { login } from "../../reducers/auth";
+import { login } from "../../reducers/authThunks";
 import { useState } from "react";
 
 /**

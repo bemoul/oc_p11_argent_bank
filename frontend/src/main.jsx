@@ -9,10 +9,10 @@ import "./assets/style/main.scss";
 import { App } from './App.jsx';
 import { Home } from './pages/Home/Home.jsx';
 import { SignIn } from './pages/SignIn/SignIn.jsx';
-import reducer from "./reducers";
-import { getUserProfile } from './reducers/auth';
+import { getUserProfile } from './reducers/authThunks';
 import Profile from './pages/Profile/Profile.jsx';
 import GuestRoute from './components/GuestRoute/GuestRoute.jsx';
+import authReducer from './reducers/authSlice.js';
 
 /**
  * main.jsx - Entry point for the application
@@ -24,7 +24,7 @@ import GuestRoute from './components/GuestRoute/GuestRoute.jsx';
 /**
  * Configures the Redux store with combined reducers
  */
-const store = configureStore({ reducer });
+const store = configureStore({ reducer: { auth: authReducer } });
 
 /**
  * PrivateRoute component to protect routes

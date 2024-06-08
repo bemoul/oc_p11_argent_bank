@@ -1,7 +1,7 @@
 import React, { useEffect } from 'react';
 import { Navigate } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
-import { getUserProfile } from '../../reducers/auth';
+import { getUserProfile } from '../../reducers/authThunks';
 import { UserHeader } from '../../components/UserHeader/UserHeader';
 import { Transactions } from '../../components/Transactions/Transactions';
 

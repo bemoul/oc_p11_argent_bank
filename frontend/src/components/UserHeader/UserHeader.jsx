@@ -1,6 +1,6 @@
 import React from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { profilEdit } from '../../reducers/auth';
+import { profilEdit } from '../../reducers/authSlice';
 import UserEdit from '../UserEdit/UserEdit';
 
 /**
