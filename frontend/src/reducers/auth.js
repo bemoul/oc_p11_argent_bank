@@ -28,7 +28,7 @@ export const login = createAsyncThunk(
         userData
       );
       console.log('API response: ', response.data);
-      localStorage.setItem('accessToken', response.data.token); // Store token
+      localStorage.setItem('accessToken', response.data.body.token); // Store token
       return response.data;
     } catch (err) {
       return thunkAPI.rejectWithValue(err.response.data.message || 'Failed to login');
@@ -55,6 +55,44 @@ export const getUserProfile = createAsyncThunk(
   }
 );
 
+// Thunk for updating user profile
+export const userUpdateProfile = createAsyncThunk(
+  "auth/userUpdateProfile",
+  async ({ newFirstName, newLastName }, thunkAPI) => {
+    try {
+      const state = thunkAPI.getState();
+      const token = state.auth.currentUser; // Get token from state
+
+      if (!token) {
+        throw new Error("No token found");
+      }
+
+      const response = await axios.put(
+        "http://localhost:3001/api/v1/user/profile",
+        { firstName: newFirstName, lastName: newLastName },
+        {
+          headers: {
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${token}`
+          }
+        }
+      );
+
+      console.log('API response for update:', response.data); // Log the response
+
+      if (response.status === 200) {
+        return response.data;
+      } else {
+        throw new Error("Failed to update profile");
+      }
+    } catch (err) {
+      console.error("Profile update error: ", err.response ? err.response.data : err.message);
+      return thunkAPI.rejectWithValue(err.response ? err.response.data.message : err.message);
+    }
+  }
+);
+
+
 // Slice for authentication management
 const authSlice = createSlice({
   name: "auth",
@@ -79,7 +117,8 @@ const authSlice = createSlice({
     // Action to toggle profile edit state
     profilEdit: (state) => {
       state.isUserEdit = !state.isUserEdit;
-    }
+    },
+    
   },
   extraReducers: (builder) => {
     builder
@@ -89,7 +128,7 @@ const authSlice = createSlice({
       })
       .addCase(login.fulfilled, (state, action) => {
         state.isLoading = false;
-        state.currentUser = action.payload;
+        state.currentUser = action.payload.body.token;
       })
       .addCase(login.rejected, (state, action) => {
         state.isLoading = false;
@@ -113,6 +152,25 @@ const authSlice = createSlice({
         localStorage.setItem('email', email);
       })
       .addCase(getUserProfile.rejected, (state, action) => {
+        state.isLoading = false;
+        state.error = action.payload;
+      })
+      .addCase(userUpdateProfile.pending, (state) => {
+        state.isLoading = true;
+        state.error = null;
+      })
+      .addCase(userUpdateProfile.fulfilled, (state, action) => {
+        const { firstName, lastName } = action.payload.body;
+        state.firstName = firstName;
+        state.lastName = lastName;
+        state.isLoading = false;
+        state.isUserEdit = false; // Exit edit mode
+
+        // Update local storage with new profile data
+        localStorage.setItem('firstName', firstName);
+        localStorage.setItem('lastName', lastName);
+      })
+      .addCase(userUpdateProfile.rejected, (state, action) => {
         state.isLoading = false;
         state.error = action.payload;
       });
