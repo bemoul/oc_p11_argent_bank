@@ -8,9 +8,9 @@ import UserEdit from '../UserEdit/UserEdit';
  *
  * @returns {JSX.Element} UserHeader component
  */
-export const UserHeader = ({ firstname, lastname }) => {
+export const UserHeader = () => {
   const dispatch = useDispatch();
-  const { firstName, lastName, isUserEdit } = useSelector((state) => state.auth);
+  const { userName, firstName, lastName, isUserEdit } = useSelector((state) => state.auth);
 
   const handleEdit = (e) => {
     e.preventDefault();
@@ -19,10 +19,10 @@ export const UserHeader = ({ firstname, lastname }) => {
 
   return (
     <div className="header">
-      <h1>Welcome back {firstname} {lastname}!</h1>
+      <h1>Welcome back {firstName} {lastName}!</h1>
       <div className="user">
         {isUserEdit ? (
-          <UserEdit firstname={firstName} lastname={lastName} />
+          <UserEdit userName={userName} firstname={firstName} lastname={lastName} />
         ) : (
           <button className="edit-button" onClick={handleEdit}>Edit Name</button>
         )}

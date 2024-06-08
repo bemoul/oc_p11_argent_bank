@@ -41,7 +41,7 @@ export const getUserProfile = createAsyncThunk(
 // Thunk for updating user profile
 export const userUpdateProfile = createAsyncThunk(
   "auth/userUpdateProfile",
-  async ({ newFirstName, newLastName }, thunkAPI) => {
+  async ({ newUsername,  firstName, lastName }, thunkAPI) => {
     try {
       const state = thunkAPI.getState();
       const token = state.auth.currentUser; // Get token from state
@@ -52,7 +52,7 @@ export const userUpdateProfile = createAsyncThunk(
 
       const response = await axios.put(
         "http://localhost:3001/api/v1/user/profile",
-        { firstName: newFirstName, lastName: newLastName },
+        { userName: newUsername, firstName, lastName },
         {
           headers: {
             'Content-Type': 'application/json',
