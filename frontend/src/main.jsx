@@ -1,8 +1,7 @@
 import React, { useEffect } from 'react';
-import ReactDOM from 'react-dom/client'; // Are you sure about this import? It's unusual.
-
+import ReactDOM from 'react-dom/client';
 import { createBrowserRouter, Navigate, RouterProvider } from "react-router-dom";
-import { Provider, useDispatch } from 'react-redux';
+import { Provider, useDispatch, useSelector } from 'react-redux';
 import { configureStore } from '@reduxjs/toolkit';
 
 import "./assets/style/main.scss";
@@ -13,8 +12,35 @@ import { SignIn } from './pages/SignIn/SignIn.jsx';
 import reducer from "./reducers";
 import { getUserProfile } from './reducers/auth';
 import Profile from './pages/Profile/Profile.jsx';
+import GuestRoute from './components/GuestRoute/GuestRoute.jsx';
 
-// Create browser router instance with route configuration
+/**
+ * main.jsx - Entry point for the application
+ * 
+ * This file sets up the React application, configures the Redux store,
+ * defines route protection, and initializes the app.
+ */
+
+/**
+ * Configures the Redux store with combined reducers
+ */
+const store = configureStore({ reducer });
+
+/**
+ * PrivateRoute component to protect routes
+ *
+ * @param {Object} props - The component props
+ * @param {JSX.Element} props.children - The children components
+ * @returns {JSX.Element} The protected route or a redirection to login
+ */
+const PrivateRoute = ({ children }) => {
+  const currentUser = useSelector((state) => state.auth.currentUser);
+  return currentUser ? children : <Navigate to="/login" />;
+};
+
+/**
+ * Create a browser router instance with route configuration
+ */
 const router = createBrowserRouter([
   {
     path: "/",
@@ -26,25 +52,30 @@ const router = createBrowserRouter([
       },
       {
         path: "/login",
-        element: <SignIn />
+        element: (
+          <GuestRoute>
+            <SignIn />
+          </GuestRoute>
+        ),
       },
       {
         // protected routes
         path: "/profile",
-        element: <Profile />
+        element: <PrivateRoute><Profile /></PrivateRoute>,
       },
-     {
-      path: "*",
-      element: <Navigate to="/" />
-     }
+      {
+        path: "*",
+        element: <Navigate to="/" />,
+      },
     ],
   },
 ]);
 
-// Configure Redux store with combined reducers
-const store = configureStore({ reducer });
-
-// AppInitializer handles any necessary app initialization logic
+/**
+ * AppInitializer component to handle any necessary app initialization logic
+ *
+ * @returns {JSX.Element} The initialized app with router
+ */
 const AppInitializer = () => {
   const dispatch = useDispatch();
 
