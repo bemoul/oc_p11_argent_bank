@@ -10,6 +10,8 @@
     margin-top: 3rem;
     margin-bottom: 9rem;
     padding: 2rem;
+    border-radius: 10px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
 
     & .input-wrapper {
       display: flex;
@@ -22,13 +24,13 @@
       }
 
       & input {
-        padding: 5px;
         font-size: 1.2rem;
-      }
-
-      & .error-message {
-        font-weight: 600;
-        color: red;
+        width: 100%;
+        padding: 10px;
+        border: 1px solid #ccc;
+        border-radius: 5px;
+        font-size: 16px;
+        transition: border-color 0.3s;
       }
     }
 
@@ -39,16 +41,27 @@
         margin-left: 0.25rem;
       }
     }
-    & .sign-in-button {
-      display: block;
+    & button[type="submit"] {
       width: 100%;
-      padding: 8px;
-      font-size: 1.2rem;
-      font-weight: bold;
-      margin-top: 1rem;
-      border-color: #00bc77;
-      background-color: #00bc77;
+      padding: 10px;
+      border: none;
+      border-radius: 5px;
+      font-size: 16px;
+      cursor: pointer;
+      background-color: #28a745;
       color: #fff;
-      text-decoration: underline;
+      transition: background-color 0.3s, transform 0.3s;
+
+      &:hover {
+        background-color: #218838;
+      }
+    }
+
+    & .error {
+      background-color: rgb(187, 23, 23);
+      color: #fff;
+      border-radius: 5px;
+      padding: 10px;
+      margin: 10px 0 10px 0;
     }
   }
